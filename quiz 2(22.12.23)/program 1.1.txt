@@ -1,0 +1,29 @@
+#include <stdio.h>
+// Function to take input for a matrix
+void inputMatrix(int matrix[3][3]) {
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            printf("Enter value for row %d, column %d: ", i + 1, j + 1);
+            scanf("%d", &matrix[i][j]);
+        }
+    }
+}
+// Function to display a matrix
+void displayMatrix(int matrix[3][3]) {
+    printf("Matrix:\n");
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            printf("%d ", matrix[i][j]);
+        }
+        printf("\n");
+    }
+}
+// Main function
+int main() {
+    int userMatrix[3][3];
+    // Get input from the user
+    inputMatrix(userMatrix);
+    // Display the matrix
+    displayMatrix(userMatrix);
+    return 0;
+}

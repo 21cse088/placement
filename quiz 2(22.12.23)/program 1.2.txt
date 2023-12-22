@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <ctype.h>
+void expandString(const char *input, char *output) {
+    int i = 0, outputIndex = 0;
+    while (input[i] != '\0') {
+        char currentChar = input[i++];
+        int repeatCount = 0;
+        while (isdigit(input[i])) {
+            repeatCount = repeatCount * 10 + (input[i] - '0');
+            i++;
+        }
+        if (repeatCount == 0) {
+            repeatCount = 1;
+        }
+        for (int j = 0; j < repeatCount; j++) {
+            output[outputIndex++] = currentChar;
+        }
+    }
+    output[outputIndex] = '\0';
+}
+int main() {
+    const char input1[] = "a1b10";
+    char output1[100]; 
+    expandString(input1, output1);
+    printf("Input: %s\nOutput: %s\n\n", input1, output1);
+    const char input2[] = "b3c6d15";
+    char output2[100];
+    expandString(input2, output2);
+    printf("Input: %s\nOutput: %s\n", input2, output2);
+    return 0;
+}
