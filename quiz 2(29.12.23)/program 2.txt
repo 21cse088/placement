@@ -1,0 +1,78 @@
+class Employee {
+    private String name;
+    private int employeeId;
+    private static final double BASIC_SALARY = 50000;
+
+    public Employee(String name, int employeeId) {
+        this.name = name;
+        this.employeeId = employeeId;
+    }
+
+    public double calculateSalary() {
+        return BASIC_SALARY;
+    }
+
+    public String toString() {
+        return "Name: " + name + "\nEmployee ID: " + employeeId + "\nBasic Salary: $" + BASIC_SALARY;
+    }
+}
+
+class Manager extends Employee {
+    private double bonusPercentage;
+
+    public Manager(String name, int employeeId, double bonusPercentage) {
+        super(name, employeeId);
+        this.bonusPercentage = bonusPercentage;
+    }
+
+    @Override
+    public double calculateSalary() {
+        double basicSalary = super.calculateSalary();
+        double bonus = basicSalary * (bonusPercentage / 100);
+        return basicSalary + bonus;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "\nBonus Percentage: " + bonusPercentage + "%";
+    }
+}
+
+class Developer extends Employee {
+    private String programmingLanguage;
+
+    public Developer(String name, int employeeId, String programmingLanguage) {
+        super(name, employeeId);
+        this.programmingLanguage = programmingLanguage;
+    }
+
+    @Override
+    public double calculateSalary() {
+        double basicSalary = super.calculateSalary();
+        double allowance = 2000; // Extra allowance for developers
+        return basicSalary + allowance;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "\nProgramming Language: " + programmingLanguage;
+    }
+}
+
+public class Company {
+    public static void main(String[] args) {
+        Manager manager = new Manager("John Doe", 101, 15.0);
+        Developer developer = new Developer("Jane Smith", 102, "Java");
+
+        // Print details and calculate salary for Manager
+        System.out.println("Manager Details:");
+        System.out.println(manager);
+        System.out.println("Total Salary: $" + manager.calculateSalary());
+        System.out.println();
+
+        // Print details and calculate salary for Developer
+        System.out.println("Developer Details:");
+        System.out.println(developer);
+        System.out.println("Total Salary: $" + developer.calculateSalary());
+    }
+}
