@@ -1,0 +1,72 @@
+class PrimeNumberFinder implements Runnable {
+    private int start;
+    private int end;
+    public PrimeNumberFinder(int start, int end) {
+        this.start = start;
+        this.end = end;
+    }
+    private boolean isPrime(int number) {
+        if (number <= 1) {
+            return false;
+        }
+        for (int i = 2; i <= Math.sqrt(number); i++) {
+            if (number % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+    @Override
+    public void run() {
+        System.out.println(Thread.currentThread().getName() + ": Prime numbers from " + start + " to " + end + " :");
+        for (int i = start; i <= end; i++) {
+            if (isPrime(i)) {
+                System.out.print(i + " ");
+            }
+        }
+        System.out.println();
+    }
+}
+class PalindromeNumberFinder implements Runnable {
+    private int start;
+    private int end;
+    public PalindromeNumberFinder(int start, int end) {
+        this.start = start;
+        this.end = end;
+    }
+    private boolean isPalindrome(int number) {
+        int originalNumber = number;
+        int reversedNumber = 0;
+        while (number != 0) {
+            int digit = number % 10;
+            reversedNumber = reversedNumber * 10 + digit;
+            number /= 10;
+        }
+        return originalNumber == reversedNumber;
+    }
+    @Override
+    public void run() {
+        System.out.println(Thread.currentThread().getName() + ": Palindrome numbers from " + start + " to " + end + " :");
+        for (int i = start; i <= end; i++) {
+            if (isPalindrome(i)) {
+                System.out.print(i + " ");
+            }
+        }
+        System.out.println();
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        PrimeNumberFinder primeThread = new PrimeNumberFinder(0, 10);
+        PalindromeNumberFinder palindromeThread = new PalindromeNumberFinder(10, 50);
+        Thread t1 = new Thread(primeThread, "PrimeThread");
+        Thread t2 = new Thread(palindromeThread, "PalindromeThread");
+        t1.start();
+        try {
+            t1.join();  
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        t2.start();
+    }
+}

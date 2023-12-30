@@ -1,0 +1,55 @@
+class NumberPrinter {
+    private int n;
+    private int currentNumber = 1;
+    private final Object lock = new Object();
+    public NumberPrinter(int n) {
+        this.n = n;
+    }
+    public void printNumbers(boolean isEven) {
+        synchronized (lock) {
+            while (currentNumber <= n) {
+                if ((currentNumber % 2 == 0) == isEven) {
+                    System.out.println(Thread.currentThread().getName() + ": " + currentNumber);
+                    currentNumber++;
+                    lock.notify();  
+                } else {
+                    try {
+                        lock.wait();  
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+}
+class PrintOdd implements Runnable {
+    private NumberPrinter numberPrinter;
+    public PrintOdd(NumberPrinter numberPrinter) {
+        this.numberPrinter = numberPrinter;
+    }
+    @Override
+    public void run() {
+        numberPrinter.printNumbers(false);
+    }
+}
+class PrintEven implements Runnable {
+    private NumberPrinter numberPrinter;
+    public PrintEven(NumberPrinter numberPrinter) {
+        this.numberPrinter = numberPrinter;
+    }
+    @Override
+    public void run() {
+        numberPrinter.printNumbers(true);
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        int n = 10;
+        NumberPrinter numberPrinter = new NumberPrinter(n);
+        Thread t1 = new Thread(new PrintOdd(numberPrinter), "Thread-1");
+        Thread t2 = new Thread(new PrintEven(numberPrinter), "Thread-2");
+        t1.start();
+        t2.start();
+    }
+}
